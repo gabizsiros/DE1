@@ -1,0 +1,41 @@
+
+{
+    "version": "4.6.3.v202209271016",
+    "created": "2022-10-25 14:48",
+    "nodestats": {
+        "nodes": [
+            {
+                "id": "org.knime.database.extension.mysql.node.connector.MySQLDBConnectorNodeFactory#MySQL Connector",
+                "nrexecs": 1,
+                "nrfails": 12,
+                "exectime": 31209,
+                "nrcreated": 2,
+                "successor": "org.knime.database.node.io.reader.query.DBQueryReaderNodeFactory#DB Query Reader"
+            },
+            {
+                "id": "org.knime.database.node.io.reader.query.DBQueryReaderNodeFactory#DB Query Reader",
+                "nrexecs": 0,
+                "nrfails": 3,
+                "exectime": 100,
+                "nrcreated": 1,
+                "successor": "n/a"
+            }
+        ],
+        "metaNodes": {
+        },
+        "wrappedNodes": {
+        }
+    },
+    "uptime": 1293288311,
+    "workflowsOpened": 1,
+    "remoteWorkflowsOpened": 0,
+    "columnarStorageWorkflowsOpened": 0,
+    "workflowsImported": 0,
+    "workflowsExported": 0,
+    "webUIPerspectiveSwitches": 0,
+    "launches": 1,
+    "lastApplicationID": "org.knime.product.KNIME_APPLICATION",
+    "timeSinceLastStart": 1293288311,
+    "crashes": 0,
+    "properlyShutDown": true
+}

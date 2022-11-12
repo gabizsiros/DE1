@@ -1,0 +1,17 @@
+need to change the my.ini file in C:\ProgramData\MySQL\MySQL Server 8.0
+
+I first tried to alter the file in notepad but it didnt let me run as admin. 
+so open Wordpad and open my.ini from wordpad.
+Then scroll to the very end and tpye:
+
+local_infile=1
+secure_file_priv=''
+
+THen you etiehr restart the mySQL server or simpler is to restart the whole computer,
+
+Then run 
+
+SHOW VARIABLES LIKE "local_infile";
+
+again
+
