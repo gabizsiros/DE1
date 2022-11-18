@@ -1,7 +1,9 @@
+-- creating Schema for Harry Potter Movie Dialogue DB
 DROP SCHEMA IF EXISTS `hp`;
 CREATE SCHEMA  `hp`;
 USE `hp`;
 
+-- loading each database 
 SHOW VARIABLES LIKE "secure_file_priv";
 SHOW VARIABLES LIKE "local_infile";
 DROP TABLE IF EXISTS movies;
@@ -36,6 +38,7 @@ FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' ;
 
+-- chapters databse has foreign key
 DROP TABLE IF EXISTS chapters;
 CREATE TABLE chapters (
 Chapter_ID INTEGER,
@@ -80,7 +83,7 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n' 
 IGNORE 1 LINES ();
 
-
+-- loading final databse with essential foreign keys
 	DROP TABLE IF EXISTS dialogue;
 	CREATE TABLE dialogue(
 	Dialogue_ID INTEGER,
