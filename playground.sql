@@ -118,3 +118,4 @@ SELECT Movie, Place, count(Place) FROM dialogue_analyse group by Place order by 
     
     SELECT CharacterName,  (Dialogue) from dialogue_analyse group by CharacterName order by count(Dialogue) desc;
     
+    

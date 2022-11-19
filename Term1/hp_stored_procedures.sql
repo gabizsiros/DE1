@@ -14,7 +14,17 @@ BEGIN
 		count(distinct(dialogue.Dialogue)) AS Dialogues, 
 		count(distinct(chapters.Chapter_Name)) AS Chapters,
 		concat('$ ',movies.Profit) AS Profit,
-		avg(dialogue.sent_score) As Average_Sentiment
+		avg(dialogue.sent_score) As Average_Sentiment,
+        -- Ordering a semantic value to the sentiment score
+        CASE 
+        WHEN avg(sent_score) > 0
+            THEN 'Positive'
+        WHEN  avg(sent_score) = 0 
+            THEN 'NEUTRAL'
+        ELSE 
+            'NEGATIVE'
+    END
+    AS Sentiment_Category  
 		FROM dialogue
 			LEFT JOIN chapters
 			USING (Chapter_ID)
