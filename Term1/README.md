@@ -14,7 +14,10 @@ Before starting to analyze my dataset, I wrote a short script, using `SentimentA
 I modified my *Dialogues* database with the sentiment score (as well as a semantic evaluation for possible future use).  
 ##### Script used: hp_sentiment.R
 ## 3. Operational layer, modeling: 
-Hp_table create.sql loads the various csv files and sets up the relations between the datasets. (In some data table, I have already removed the header line in the source file, and in others, they were ignored). 
+Hp_table create.sql loads the various csv files and sets up the relations between the datasets. (In some data table, I have already removed the header line in the source file, and in others, they were ignored).  
+  
+__:warning:IMPORTANT: as per default, MYSQL will load the filed form the following path: `C:\ProgramData\MySQL\MySQL Server 8.0\Data`:warning:__  
+  
 ![hp_EER](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_eer.jpg)  
 ##### Model: hp_EER_model.mwb
 ### 3.1 Transformation
