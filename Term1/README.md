@@ -12,11 +12,11 @@ Before starting to analyze my dataset, I wrote a short script, using `SentimentA
   
 ###### *The accuracy of the sentiment analysis is not subject to this term project
 I modified my *Dialogues* database with the sentiment score (as well as a semantic evaluation for possible future use).  
-==Script used: hp_sentiment.R==
+##### Script used: hp_sentiment.R
 ## 3. Operational layer, modeling: 
 Hp_table create.sql loads the various csv files and sets up the relations between the datasets. (In some data table, I have already removed the header line in the source file, and in others, they were ignored). 
 ![hp_EER](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_eer.jpg)  
-==Model: hp_EER_model.mwb==
+##### Model: hp_EER_model.mwb
 ### 3.1 Transformation
 One data cleaning activity was necessary in the *movies* database, before proceeding with the project. The observations for `Budget` and `Box_Office` variables were stored as text, comma separated at the thousand digits and marked with currency ($). As I was interested in the profit (i.e. the difference of box office and budget) for each movie, I added an extra column by transforming these two variables with the `cast` and various text functions.
 ``` js
@@ -30,9 +30,9 @@ GENERATED ALWAYS AS
  ) STORED;
 ```
 
-==Scripts used:  
+##### Scripts used:  
 hp_table_create.sql  
-hp_dw.sql==
+hp_dw.sql
 
 ## 4. Analytical Questions & Data marts
 Given the applied sentiment analysis, I primarily approached the dataset from the Sentiment point of view, completing
@@ -51,7 +51,7 @@ Note that by interpreting the results, one must consider that the sentiment anal
 - Who talks the most? :arrow_right: Top talkers view
 - What are the most popular places :arrow_right: Popular places view
 
-==Script used: hp_datamarts.sql==
+##### Script used: hp_datamarts.sql
 ## 5. ETL
 
 ### 5.1 Overview
@@ -60,13 +60,16 @@ Note that by interpreting the results, one must consider that the sentiment anal
  
 
 ### 5.2 Analytical layer
-Given that the dialogue database was the one with most observations, and had foreign key to other tables as well, this is what I used as the basis of joining transformations. Mapping the actual values to the IDs from relational databases enables us to get a clear picture and interpretable data views. 
+Given that the dialogue database was the one with most observations, and had foreign key to other tables as well, this is what I used as the basis of joining transformations. Mapping the actual values to the IDs from relational databases enables us to get a clear picture and interpretable data views. The key dimensions in the analytical layer correspond closely to the original dataset, e.g.the dimension of characters is coming from the *characters* dataset, combine with the sentiment value that adds a quantifiable and, when semantically transformed, a quantifiable feature to the data. Since the *dialogue* dataset contains the most observations and relates to other datasets, it is applied to *places* and *characters* that creates dimensions that can be summarized and ordered.  
+The only exception is *movies*, which primarily concentrates on financials, and because of that, I have chosen to take the view of the financial dimension directly. The only transformation required (to convert the financial data into numeric variable and calculate profit) was applied at an earlier stage.  
+
+In this analysis, *chapters* serves as a link between *movies* and the other datasets, which plays a role when the user wants to have an overview on a movie-level basis. 
 
 ### 5.3 Stored Procedures 
 
-Creating a datawarehouse with cleaned and transformed data creates a database that contains all information, that are necessary to naswer the analytical questions. Stored procedures enables the user an overview that concentrates on important data, best applied to summarizing of descriptive delivery of the data. Here two procdes were created, both generates queries related to a movie, selected by the user. 
+Creating a data warehouse with cleaned and transformed data creates a database that contains all information, that are necessary to answer the analytical questions. Stored procedures enable the user an overview that concentrates on important data, best applied to summarizing of descriptive delivery of the data. Here two procedures were created, both generates queries related to a movie, selected by the user. 
 
-Both of the stored procedures take an ‘x’ variable where ‘x’ is the movie number (1-8). MovieSummary creates a materialized view (which mostly has benefit on much larger datasets) with the main quantifiable characteristic of the data (number of characters, chapters, places, 
+Both stored procedures take an `x` variable where `x` is the movie number (1-8). `GetMovieSummary` creates a materialized view (which mostly has benefit on much larger datasets) with the main quantifiable characteristic of the data: number of characters, chapters, places, profit of the movie, the average sentiment score and a written evaluation of the score (positive, negative, neutral)
 
 ``` js
 //creating a materialized view with the input of movie number (Movie_ID)
@@ -84,7 +87,17 @@ BEGIN
 		count(distinct(dialogue.Dialogue)) AS Dialogues, 
 		count(distinct(chapters.Chapter_Name)) AS Chapters,
 		concat('$ ',movies.Profit) AS Profit,
-		avg(dialogue.sent_score) As Average_Sentiment
+		avg(dialogue.sent_score) As Average_Sentiment,
+	//Ordering a semantic value to the sentiment score
+        CASE 
+        WHEN avg(sent_score) > 0
+            THEN 'Positive'
+        WHEN  avg(sent_score) = 0 
+            THEN 'NEUTRAL'
+        ELSE 
+            'NEGATIVE'
+    END
+    AS Sentiment_Category  
 		FROM dialogue
 			LEFT JOIN chapters
 			USING (Chapter_ID)
@@ -99,14 +112,14 @@ BEGIN
         END //
 DELIMITER ;
 ```
+The other store procedure `GetMovieScript` has an entirely different purpose: rather than summarizin, it elaborates, and essentialyl rereates the compelte movie script in an interpretable way: chapters, characters, and places are now assigned ot the dialogues, and it is now easily readable which was not the case in the original *dialogue* database. 
 
-==Script used: hp_stored_procedures.sql==
+##### Script used: hp_stored_procedures.sql
 ## 6. Final thoughts on the analysis
 Data marts coming from a static database might pose the of usability and operational impact, especially with a dataset like Harry Potter Dialogues. (Even though with a more refined sentiment analysis might open statistical possibilities to examine sentiments and financial performance for instance).  
    
-However, the outline of the process can easily be applied to such environment, where text and sentiments can have business impact. Let’s thinks about switching dialogues to call center conversations, characters to agents, places to teams, movies to departments and we might have a solid basis to gain significant operation insight in a business.  
-
-#### Relevant files and scripts:
+However, the outline of the process can easily be applied to such environment, where text and sentiments can have business impact. Let’s thinks about switching dialogues to call center conversations, characters to agents, places to teams, movies to departments and we might have a solid basis to gain significant operation insight in a business. 
+Summary of files and scripts:
 + HP_movies / Chapters.csv, Characters.csv, Data_dictionary.csv, Dialogues.csv, Places.csv, Spells.csv, Movies.csv
 + [hp_sentiment.R](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_sentiment.R)
 + [hp_table_create.sql](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_table_create.sql)
@@ -114,4 +127,5 @@ However, the outline of the process can easily be applied to such environment, w
 + [hp_datamarts.sql](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_datamarts.sql)
 + [hp_stored_procedures.sql](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_stored_procedures.sql)
 + [hp_EER_model.mwb](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_EER_model.mwb)
+
 
