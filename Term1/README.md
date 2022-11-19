@@ -104,8 +104,9 @@ DELIMITER ;
 ## 6. Final thoughts on the analysis
 Data marts coming from a static database might pose the of usability and operational impact, especially with a dataset like Harry Potter Dialogues. (Even though with a more refined sentiment analysis might open statistical possibilities to examine sentiments and financial performance for instance).  
    
-However, the outline of the process can easily be applied to such environment, where text and sentiments can have business impact. Let’s thinks about switching dialogues to call center conversations, characters to agents, places to teams, movies to departments and we might have a solid basis to gain significant operation insight in a business. 
-Summary of files and scripts:
+However, the outline of the process can easily be applied to such environment, where text and sentiments can have business impact. Let’s thinks about switching dialogues to call center conversations, characters to agents, places to teams, movies to departments and we might have a solid basis to gain significant operation insight in a business.  
+
+#### Relevant files and scripts:
 + HP_movies / Chapters.csv, Characters.csv, Data_dictionary.csv, Dialogues.csv, Places.csv, Spells.csv, Movies.csv
 + [hp_sentiment.R](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_sentiment.R)
 + [hp_table_create.sql](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_table_create.sql)
