@@ -52,13 +52,20 @@ Note that by interpreting the results, one must consider that the sentiment anal
 - What are the most popular places :arrow_right: Popular places view
 
 ==Script used: hp_datamarts.sql==
-## 5. Analytical layer
-Given that the dialogue database was the one with most observations, and had foreign key to other tables as well, this is what I used as the basis of joining transformations. Mapping the actual values to the IDs from relational databases enables us to get a clear picture and interpretable data views. 
+## 5. ETL
+
 ### 5.1 Overview
 
 ![datalayers](https://github.com/gabizsiros/DE1/blob/main/Term1/hp_datalayers.jpg)
  
-## 6. Stored Procedures 
+
+### 5.2 Analytical layer
+Given that the dialogue database was the one with most observations, and had foreign key to other tables as well, this is what I used as the basis of joining transformations. Mapping the actual values to the IDs from relational databases enables us to get a clear picture and interpretable data views. 
+
+### 5.3 Stored Procedures 
+
+Creating a datawarehouse with cleaned and transformed data creates a database that contains all information, that are necessary to naswer the analytical questions. Stored procedures enables the user an overview that concentrates on important data, best applied to summarizing of descriptive delivery of the data. Here two procdes were created, both generates queries related to a movie, selected by the user. 
+
 Both of the stored procedures take an ‘x’ variable where ‘x’ is the movie number (1-8). MovieSummary creates a materialized view (which mostly has benefit on much larger datasets) with the main quantifiable characteristic of the data (number of characters, chapters, places, 
 
 ``` js
@@ -94,7 +101,7 @@ DELIMITER ;
 ```
 
 ==Script used: hp_stored_procedures.sql==
-## 7. Final thoughts on the analysis
+## 6. Final thoughts on the analysis
 Data marts coming from a static database might pose the of usability and operational impact, especially with a dataset like Harry Potter Dialogues. (Even though with a more refined sentiment analysis might open statistical possibilities to examine sentiments and financial performance for instance).  
    
 However, the outline of the process can easily be applied to such environment, where text and sentiments can have business impact. Let’s thinks about switching dialogues to call center conversations, characters to agents, places to teams, movies to departments and we might have a solid basis to gain significant operation insight in a business. 
